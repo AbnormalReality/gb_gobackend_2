@@ -1,0 +1,24 @@
+package store
+
+import (
+	"github.com/AbnormalReality/gb_gobackend_2/lesson1/internal/logic/app/repos"
+	"github.com/AbnormalReality/gb_gobackend_2/lesson1/internal/infrastructure/db"
+)
+
+type Store struct {
+	User      *user.Users
+	Group     *user.Groups
+	UserGroup *user.UserGroupMapper
+}
+
+func NewStore() (*Store, error) {
+	var store Store
+
+	s := memstore.NewStore()
+
+	store.User = user.NewUsers(s)
+	store.Group = user.NewGroups(s)
+	store.UserGroup = user.NewUserGroups(s)
+
+	return &store, nil
+}

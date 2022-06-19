@@ -1,0 +1,68 @@
+package handler
+
+import (
+	"database/sql"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"net/http"
+
+	"github.com/covrom/hex_arch_example/best_practice/internal/entities/user"
+	"github.com/covrom/hex_arch_example/best_practice/internal/logic/app/repos/userrepo"
+
+	"github.com/google/uuid"
+)
+
+type Router struct {
+	*http.ServeMux
+	us *userrepo.Users
+}
+
+func NewRouter(us *userrepo.Users) *Router {
+	r := &Router{
+		ServeMux: http.NewServeMux(),
+		us:       us,
+	}
+	r.Handle("/create",
+		// r.AuthMiddleware(
+		r.AuthMiddleware(
+			http.HandlerFunc(r.CreateUser),
+		),
+
+	)
+	r.Handle("/user/read", r.AuthMiddleware(http.HandlerFunc(r.ReadUser)))
+	r.Handle("/user/delete", r.AuthMiddleware(http.HandlerFunc(r.DeleteUser)))
+	r.Handle("/user/search", r.AuthMiddleware(http.HandlerFunc(r.SearchUser)))
+	r.Handle("/user/get_groups", r.AuthMiddleware(http.HandlerFunc(r.GetGroups)))
+	r.Handle("/user/add_group", r.AuthMiddleware(http.HandlerFunc(r.AddUserToGroup)))
+	r.Handle("/user/delete_group", r.AuthMiddleware(http.HandlerFunc(r.DeleteUserFromGroup)))
+
+	r.Handle("/groups/create",
+		r.AuthMiddleware(
+			http.HandlerFunc(r.CreateGroup),
+		),
+	)
+	r.Handle("/groups/read", r.AuthMiddleware(http.HandlerFunc(r.ReadGroup)))
+	r.Handle("/groups/delete", r.AuthMiddleware(http.HandlerFunc(r.DeleteGroup)))
+	r.Handle("/groups/search", r.AuthMiddleware(http.HandlerFunc(r.SearchGroup)))
+	r.Handle("/groups/add_user", r.AuthMiddleware(http.HandlerFunc(r.AddUserToGroup)))
+	r.Handle("/groups/delete_user", r.AuthMiddleware(http.HandlerFunc(r.DeleteUserFromGroup)))
+
+	return r
+}
+
+type User struct {
+	ID         uuid.UUID `json:"id"`
+	Name       string    `json:"name"`
+	Data       string    `json:"data"`
+	Email      string    `json:"mail"`
+}
+
+type Groups struct {
+    ID          uuid.UUID `json:"id"`
+	Type        string    `json:"type"`
+	Name        string    `json:"name"`
+	Description string    `json:"description"`
+}
+
+//e.t.c ...
