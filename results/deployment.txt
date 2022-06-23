@@ -1,0 +1,63 @@
+AbnormalReality:~/Desktop/lesson2$ kubectl get pod
+NAME                       READY   STATUS    RESTARTS   AGE
+filelist-9d5968694-h7v4f   1/1     Running   0          84s
+filelist-9d5968694-l75r5   1/1     Running   0          84s
+
+AbnormalReality:~/Desktop/lesson2$ kubectl logs filelist-9d5968694-h7v4f -c filelist
+http server started on:  :8000
+
+eAbnormalReality:~/Desktop/lesson2$ kubectl describe pod filelist-6c57dfbd7c-hnskq
+Name:         filelist-6c57dfbd7c-hnskq
+Namespace:    default
+Priority:     0
+Node:         minikube/192.168.49.2
+Start Time:   Wed, 22 Jun 2022 19:28:17 +0300
+Labels:       app=filelist
+              pod-template-hash=6c57dfbd7c
+Annotations:  <none>
+Status:       Running
+IP:           172.17.0.5
+IPs:
+  IP:           172.17.0.5
+Controlled By:  ReplicaSet/filelist-6c57dfbd7c
+Containers:
+  filelist:
+    Container ID:   docker://9bc579da5870c6b0a76e16da34cda21ecb95cb1fda9be4093d6527538d4124ce
+    Image:          docker.io/AbnormalReality/filelist:v1.1.5
+    Image ID:       docker-pullable://AbnormalReality/filelist@sha256:28adb7a74bf722bac00e63609dd57d2bacabc07697db30ea191f36e8eca930e6
+    Port:           8000/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Wed, 22 Jun 2022 19:28:42 +0300
+    Ready:          True
+    Restart Count:  0
+    Liveness:       http-get http://:8000/list delay=5s timeout=5s period=15s #success=1 #failure=3
+    Readiness:      http-get http://:8000/list delay=5s timeout=1s period=10s #success=1 #failure=3
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-znnw8 (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  kube-api-access-znnw8:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age    From               Message
+  ----    ------     ----   ----               -------
+  Normal  Scheduled  8m51s  default-scheduler  Successfully assigned default/filelist-6c57dfbd7c-hnskq to minikube
+  Normal  Pulling    8m50s  kubelet            Pulling image "docker.io/AbnormalReality/filelist:v1.1.5"
+  Normal  Pulled     8m27s  kubelet            Successfully pulled image "docker.io/e4t4g/filelist:v1.1.5" in 23.100220608s
+  Normal  Created    8m26s  kubelet            Created container filelist
+  Normal  Started    8m26s  kubelet            Started container filelist

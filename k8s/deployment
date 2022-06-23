@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: filelist
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: filelist
+  template:
+    metadata:
+      labels:
+        app: filelist
+    spec:
+      containers:
+        - name: filelist
+          #IMPORTANT: provide your username here
+          image: docker.io/AbnormalReality/filelist:v1.1.5
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          livenessProbe:
+            httpGet:
+              path: /list
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 15
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /list
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 5
+            timeoutSeconds: 1

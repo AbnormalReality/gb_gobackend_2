@@ -1,0 +1,29 @@
+AbnormalReality:~/Desktop/lesson2$ kubectl get svc
+NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+filelist-srv   NodePort    10.110.49.110   <none>        9000:32059/TCP   79s
+kubernetes     ClusterIP   10.96.0.1       <none>        443/TCP          4h26m
+
+
+AbnormalReality:~/Desktop/lesson2$ kubectl describe svc filelist
+Name:                     filelist-svc
+Namespace:                default
+Labels:                   <none>
+Annotations:              <none>
+Selector:                 app=filelist
+Type:                     NodePort
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       10.110.241.202
+IPs:                      10.110.241.202
+Port:                     http  9090/TCP
+TargetPort:               8000/TCP
+NodePort:                 http  32678/TCP
+Endpoints:                172.17.0.5:8000,172.17.0.6:8000
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:                   <none>
+
+
+
+AbnormalReality:~/Desktop/lesson2$ minikube service filelist-svc --url
+http://192.168.49.2:32678

@@ -1,0 +1,2 @@
+AbnormalReality:~/Desktop/lesson2$ kubectl apply -f k8s/ingress.yaml
+ingress.networking.k8s.io/filelist-ing created
